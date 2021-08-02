@@ -18,12 +18,14 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
+require("modules/brightness")
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
 if awesome.startup_errors then
     naughty.notify({ preset = naughty.config.presets.critical,
-                     title = "Oops, there were errors during startup!",
+                     title = "Ooooops, there were errors during startup!",
                      text = awesome.startup_errors })
 end
 
@@ -244,6 +246,7 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
+            brightness.piechart,
             battery_widget,
             wibox.widget.systray(),
             mytextclock,
@@ -362,15 +365,16 @@ globalkeys = gears.table.join(
 
     awful.key({}, "XF86MonBrightnessDown", function ()
         awful.spawn("/usr/bin/simple-brightness -dec 32") end,
-    {description = "Increase brightness", group = "Settings"}),
+        --brightness_inc(-32) end,
+    {description = "Lower brightness", group = "Settings"}),
 
     awful.key({}, "XF86AudioRaiseVolume", function ()
         awful.spawn("amixer sset Master 5+") end,
-    {description = "Increase brightness", group = "Settings"}),
+    {description = "Increase volume", group = "Settings"}),
 
     awful.key({}, "XF86AudioLowerVolume", function ()
         awful.spawn("amixer sset Master 5-") end,
-    {description = "Increase brightness", group = "Settings"})
+    {description = "Lower volume", group = "Settings"})
 )
 
 clientkeys = gears.table.join(
