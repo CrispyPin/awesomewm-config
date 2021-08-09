@@ -12,9 +12,9 @@ local piechart_widget, piechart_timer = awful.widget.watch("simple-brightness ge
         widget.display_labels = false
         widget.forced_height = 24
         widget.forced_width = 24
-        widget.border_color = "#ffff00"
-        --widget.border_width = 0
-        widget.colors = {"#ffff00", "#000000"}
+        --widget.border_color = "#ffff00"
+        widget.border_width = 0
+        widget.colors = {"#ffbb00", "#444444"}
     end,
     wibox.widget.piechart()
 )
