@@ -52,6 +52,7 @@ beautiful.init(awful.util.get_configuration_dir() .. "default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "alacritty"
+file_manager = "pcmanfm"
 editor = os.getenv("code") or "nano"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -350,7 +351,7 @@ globalkeys = gears.table.join(
               {description = "show the menubar", group = "launcher"}),
     awful.key({ modkey }, "e", function() menubar.show() end,
               {description = "show the menubar", group = "launcher"}),
-    awful.key({ modkey }, "f", function() awful.spawn("pcmanfm") end,
+    awful.key({ modkey }, "f", function() awful.spawn(file_manager) end,
               {description = "open files", group = "launcher"}),
     awful.key({ modkey }, "t", function() awful.spawn(terminal) end,
               {description = "open terminal", group = "launcher"}),
@@ -534,4 +535,4 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
--- awful.util.spawn("alacritty -e fish -C neofetch")
+-- awful.spawn.raise_or_spawn("alacritty -e fish -C neofetch")
