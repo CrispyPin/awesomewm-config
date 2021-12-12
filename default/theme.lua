@@ -14,6 +14,7 @@ local theme = {}
 -- theme.font          = "sans 9"
 -- theme.font          = "source code pro bold 9"
 theme.font          = "monospace bold 10"
+--theme.font          = "comic mono 10"
 
 theme.bg_normal     = "#020202"
 theme.bg_focus      = "#bb66ff" -- in menus
