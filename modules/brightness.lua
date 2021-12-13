@@ -1,6 +1,14 @@
 local awful = require("awful")
 local wibox = require("wibox")
-local beautiful = require("beautiful")
+--local beautiful = require("beautiful")
+
+require("modules/laptop_detector")
+
+if not is_laptop then
+	brightness = {}
+	return
+end
+
 
 local piechart_widget, piechart_timer = awful.widget.watch("simple-brightness get", 1,
 	function(widget, stdout)
@@ -25,10 +33,7 @@ local inc_f = function(amt)
 	--piechart_timer
 end
 
-brightness = {}
-if is_laptop then
-	brightness = {
-		piechart = piechart_widget,
-		inc = inc_f
-	}
-end
+brightness = {
+	piechart = piechart_widget,
+	inc = inc_f
+}

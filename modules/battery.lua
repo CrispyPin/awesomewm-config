@@ -3,6 +3,14 @@ local wibox = require("wibox")
 --local beautiful = require("beautiful")
 local gears = require("gears")
 
+require("modules/laptop_detector")
+
+if not is_laptop then
+	battery_widget = wibox.widget.textbox()
+	return
+end
+
+
 local tohex = function(value)
 	local h = string.format("%x", value)
 	if h:len() == 1 then
@@ -58,13 +66,9 @@ end,
 wibox.widget.progressbar())
 
 
-battery_widget = wibox.widget.textbox()
-
-if is_laptop then
-	battery_widget = {
-		battery_bar,
-		battery_text,
-		battery_charging,
-		layout = wibox.layout.stack
-	}
-end
+battery_widget = {
+	battery_bar,
+	battery_text,
+	battery_charging,
+	layout = wibox.layout.stack
+}

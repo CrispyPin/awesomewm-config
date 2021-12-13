@@ -45,8 +45,12 @@ do
 end
 
 -- Variable definitions
+
+local theme_path = CONFIG_DIR .. "/themes/default/"
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init(CONFIG_DIR .. "default/theme.lua")
+beautiful.init(theme_path .. "theme.lua")
+naughty.notify({title = "Theme loaded", text = tostring(theme_path) })
+
 
 -- This is used later as the default terminal and editor to run.
 terminal = "alacritty"
@@ -62,7 +66,7 @@ awful.layout.layouts = {
 	-- awful.layout.suit.floating,
 }
 
--- {{{ Menu
+-- Menu
 -- Create a launcher widget and a main menu
 myawesomemenu = {
    { "hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end },
@@ -83,14 +87,19 @@ mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 menubar.show_categories = false
-menubar.menu_gen.all_menu_dirs = { "/usr/share/applications/", HOME_DIR .. ".local/share/applications/", "/var/lib/flatpak/app/" }
+menubar.menu_gen.all_menu_dirs = {
+	"/usr/share/applications/",
+	HOME_DIR .. ".local/share/applications/",
+	"/var/lib/flatpak/exports/share/applications",
+--	"/var/lib/flatpak/app/", -- takes a long time to load
+}
 
 -- Create a textclock widget
 mytextclock = wibox.widget.textclock()
 
 
 -- Create a wibox for each screen and add it
--- (mouse buttons)
+-- buttons for each tag widget
 local taglist_buttons = gears.table.join(
 	awful.button({ }, 1, function(t) t:view_only() end),
 	awful.button({ modkey }, 1, function(t)
@@ -138,7 +147,7 @@ local function set_wallpaper(s)
 		if type(wallpaper) == "function" then
 			wallpaper = wallpaper(s)
 		end
-		gears.wallpaper.fit(wallpaper, s)
+		gears.wallpaper.centered(wallpaper, s)
 	end
 end
 
@@ -418,7 +427,28 @@ awful.rules.rules = {
 					 screen = awful.screen.preferred,
 					 placement = awful.placement.no_overlap+awful.placement.no_offscreen
 	 }
-	}
+	},
+
+    -- Floating clients.
+    { rule_any = {
+        instance = {
+        },
+        class = {
+          "Arandr",
+		},
+        -- Note that the name property shown in xprop might be set slightly after creation of the client
+        -- and the name shown there might not match defined rules here.
+        name = {
+          "Event Tester",  -- xev
+		  "Steam",
+		  "Friends List",
+        },
+      }, properties = { floating = true, placement = awful.placement.no_offscreen }},
+
+    -- Add titlebars to normal clients and dialogs
+    { rule_any = {type = { "normal", "dialog" }
+      }, properties = { titlebars_enabled = true }
+    },
 }
 
 -- Signal function to execute when a new client appears.
