@@ -90,7 +90,7 @@ mytextclock = wibox.widget.textclock()
 
 
 -- Create a wibox for each screen and add it
--- click and rclick
+-- (mouse buttons)
 local taglist_buttons = gears.table.join(
 	awful.button({ }, 1, function(t) t:view_only() end),
 	awful.button({ modkey }, 1, function(t)
@@ -103,7 +103,13 @@ local taglist_buttons = gears.table.join(
 								if client.focus then
 									client.focus:toggle_tag(t)
 								end
-							end)
+							end),
+	awful.button({ }, 5, function (t)
+		awful.tag.viewnext()
+	end),
+	awful.button({ }, 4, function (t)
+		awful.tag.viewprev()
+	end)
 )
 
 -- main section of top bar

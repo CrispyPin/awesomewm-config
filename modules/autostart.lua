@@ -1,6 +1,6 @@
 local awful = require("awful")
 
-function file_exists(name)
+local function file_exists(name)
 	local f=io.open(name,"r")
 	if f~=nil then
 		io.close(f)

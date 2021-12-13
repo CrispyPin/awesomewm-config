@@ -4,7 +4,7 @@ local beautiful = require("beautiful")
 
 local piechart_widget, piechart_timer = awful.widget.watch("simple-brightness get", 1,
 	function(widget, stdout)
-		val = tonumber(stdout)
+		local val = tonumber(stdout)
 		widget.data_list = {
 			{ "brightness", val},
 			{ "fill", 255 - val}

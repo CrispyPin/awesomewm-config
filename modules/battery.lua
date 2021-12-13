@@ -1,9 +1,10 @@
 local awful = require("awful")
 local wibox = require("wibox")
-local beautiful = require("beautiful")
+--local beautiful = require("beautiful")
+local gears = require("gears")
 
 local tohex = function(value)
-	h = string.format("%x", value)
+	local h = string.format("%x", value)
 	if h:len() == 1 then
 		h = "0" .. h
 	end
@@ -32,19 +33,19 @@ local battery_charging = awful.widget.watch("cat /sys/class/power_supply/AC/onli
 end)
 
 local battery_bar = awful.widget.watch("cat /sys/class/power_supply/BAT0/capacity", 30, function (widget, stdout)
-	charge = 0
+	local charge = 0
 	for line in stdout:gmatch("[^\r\n]+") do
 		charge = tonumber(line)
 		break
 	end
 	widget.value = charge
-	red = 0
-	green = 102
+	local red = 0
+	local green = 102
 	if charge <= 50 then
 		red = (50 - charge)*5
 		green = charge*2
 	end
-	color = "#" .. tohex(red) .. tohex(green) .. "00"
+	local color = "#" .. tohex(red) .. tohex(green) .. "00"
 	widget.color			= color
 	widget.max_value		= 100
 	widget.forced_width		= 64
