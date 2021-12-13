@@ -5,6 +5,8 @@ pcall(require, "luarocks.loader")
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
+CONFIG_DIR = awful.util.get_configuration_dir()
+HOME_DIR = CONFIG_DIR .. "../../"
 require("awful.autofocus")
 -- Widget and layout library
 local wibox = require("wibox")
@@ -22,14 +24,10 @@ require("modules/laptop_detector")
 require("modules/brightness")
 require("modules/battery")
 
--- {{{ Error handling
--- Check if awesome encountered an error during startup and fell back to
--- another config (This code will only ever execute for the fallback config)
-if awesome.startup_errors then
-	naughty.notify({ preset = naughty.config.presets.critical,
-					 title = "Ooooops, there were errors during startup!",
-					 text = awesome.startup_errors })
-end
+modkey = "Mod4" -- super
+require("modules/navigation_keys")
+require("modules/special_keys")
+
 
 -- Handle runtime errors after startup
 do
@@ -45,25 +43,17 @@ do
 		in_error = false
 	end)
 end
--- }}}
 
--- {{{ Variable definitions
+-- Variable definitions
 -- Themes define colours, icons, font and wallpapers.
--- beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
-beautiful.init(awful.util.get_configuration_dir() .. "default/theme.lua")
+beautiful.init(CONFIG_DIR .. "default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "alacritty"
-file_manager = "pcmanfm"
+file_manager = "nautilus"
 editor = os.getenv("code") or "nano"
 editor_cmd = terminal .. " -e " .. editor
 
--- Default modkey.
--- Usually, Mod4 is the key with a logo between Control and Alt.
--- If you do not like this or do not have such a key,
--- I suggest you to remap Mod4 to another key using xmodmap or other tools.
--- However, you can use another modifier like Mod1, but it may interact with others.
-modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
@@ -71,7 +61,6 @@ awful.layout.layouts = {
 	-- awful.layout.suit.tile,
 	-- awful.layout.suit.floating,
 }
--- }}}
 
 -- {{{ Menu
 -- Create a launcher widget and a main menu
@@ -94,13 +83,14 @@ mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 menubar.show_categories = false
-menubar.menu_gen.all_menu_dirs = { "/usr/share/applications/", "~/.local/share/applications/" }
+menubar.menu_gen.all_menu_dirs = { "/usr/share/applications/", HOME_DIR .. ".local/share/applications/", "/var/lib/flatpak/app/" }
 
 -- Create a textclock widget
 mytextclock = wibox.widget.textclock()
 
 
 -- Create a wibox for each screen and add it
+-- click and rclick
 local taglist_buttons = gears.table.join(
 	awful.button({ }, 1, function(t) t:view_only() end),
 	awful.button({ modkey }, 1, function(t)
@@ -198,17 +188,17 @@ awful.screen.connect_for_each_screen(function(s)
 	}
 end)
 
--- {{{ Mouse bindings
+-- Mouse bindings for background
 root.buttons(gears.table.join(
-	awful.button({ }, 3, function () mymainmenu:toggle() end),
-	awful.button({ }, 4, awful.tag.viewnext),
-	awful.button({ }, 5, awful.tag.viewprev)-- scroll wheel
+	awful.button({ }, 3, function () mymainmenu:toggle() end)-- rmb
+	--awful.button({ }, 4, awful.tag.viewnext),
+	--awful.button({ }, 5, awful.tag.viewprev)-- scroll wheel on bg
 ))
 
--- {{{ Key bindings
+-- Key bindings
 globalkeys = gears.table.join(
 	awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
-			  {description="show help", group="awesome"}),
+			  {description = "show help", group="awesome"}),
 	awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
 			  {description = "view previous", group = "tag"}),
 	awful.key({ modkey,           }, "Right",  awful.tag.viewnext,
@@ -231,33 +221,18 @@ globalkeys = gears.table.join(
 	-- awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
 	--           {description = "show main menu", group = "awesome"}),
 
-	-- Layout manipulation
-	awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end,
-			  {description = "swap with next client by index", group = "client"}),
-	awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end,
-			  {description = "swap with previous client by index", group = "client"}),
-	awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end,
-			  {description = "focus the next screen", group = "screen"}),
-	awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end,
-			  {description = "focus the previous screen", group = "screen"}),
-	awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
-			  {description = "jump to urgent client", group = "client"}),
-	awful.key({ modkey,           }, "Tab",
-		function ()
-			awful.client.focus.history.previous()
-			if client.focus then
-				client.focus:raise()
-			end
-		end,
-		{description = "go back", group = "client"}),
+	
 
 	-- Standard program
 	awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
 			  {description = "open a terminal", group = "launcher"}),
-	awful.key({ modkey, "Control" }, "r", awesome.restart,
+	awful.key({ modkey, "Control" }, "r", function ()
+		awful.spawn("touch " .. HOME_DIR .. ".awesome_is_restarting")
+		awesome.restart()
+		end,
 			  {description = "reload awesome", group = "awesome"}),
-	awful.key({ modkey, "Shift"   }, "q", awesome.quit,
-			  {description = "quit awesome", group = "awesome"}),
+	--awful.key({ modkey, "Shift"   }, "q", awesome.quit,
+	--		  {description = "quit awesome", group = "awesome"}),
 
 	awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)          end,
 			  {description = "increase master width factor", group = "layout"}),
@@ -300,25 +275,10 @@ globalkeys = gears.table.join(
 	-- alt-tab menu
 	awful.key({ "Mod1" }, "Tab", function()
 			awful.menu.client_list({ theme = { width = 250 }, menu_keys = {down = {"Tab"}} }) end,
-			{description = "open window list", group = "launcher"}),
+			{description = "open window list", group = "launcher"})
 	
-	awful.key({}, "XF86MonBrightnessUp", function ()
-		awful.spawn("/usr/bin/simple-brightness -inc 32") end,
-	{description = "Increase brightness", group = "Settings"}),
-
-	awful.key({}, "XF86MonBrightnessDown", function ()
-		awful.spawn("/usr/bin/simple-brightness -dec 32") end,
-		--brightness_inc(-32) end,
-	{description = "Lower brightness", group = "Settings"}),
-
-	awful.key({}, "XF86AudioRaiseVolume", function ()
-		awful.spawn("amixer sset Master 5+") end,
-	{description = "Increase volume", group = "Settings"}),
-
-	awful.key({}, "XF86AudioLowerVolume", function ()
-		awful.spawn("amixer sset Master 5-") end,
-	{description = "Lower volume", group = "Settings"})
-)
+	)
+globalkeys = gears.table.join(globalkeys, special_keys, navigation_keys)
 
 clientkeys = gears.table.join(
 	awful.key({ modkey, "Shift"  }, "f",
@@ -478,3 +438,4 @@ client.connect_signal("focus", function(c) c.border_color = beautiful.border_foc
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
 -- awful.spawn.raise_or_spawn("alacritty -e fish -C neofetch")
+require("modules/autostart")

@@ -1,0 +1,20 @@
+local awful = require("awful")
+local gears = require("gears")
+
+special_keys = gears.table.join(
+	awful.key({}, "XF86MonBrightnessUp", function ()
+		awful.spawn("/usr/bin/simple-brightness -inc 32") end,
+	{description = "Increase brightness", group = "Settings"}),
+
+	awful.key({}, "XF86MonBrightnessDown", function ()
+		awful.spawn("/usr/bin/simple-brightness -dec 32") end,
+	{description = "Lower brightness", group = "Settings"}),
+
+	awful.key({}, "XF86AudioRaiseVolume", function ()
+		awful.spawn("amixer sset Master 5+") end,
+	{description = "Increase volume", group = "Settings"}),
+
+	awful.key({}, "XF86AudioLowerVolume", function ()
+		awful.spawn("amixer sset Master 5-") end,
+	{description = "Lower volume", group = "Settings"})
+	)
