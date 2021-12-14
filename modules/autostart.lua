@@ -1,16 +1,8 @@
 local awful = require("awful")
+require("modules/smart_reload")
 
-local function file_exists(name)
-	local f=io.open(name,"r")
-	if f~=nil then
-		io.close(f)
-		return true
-	else 
-		return false
-	end
-end
-if file_exists(HOME_DIR .. ".awesome_is_restarting") then
-	awful.spawn("rm " .. HOME_DIR .. ".awesome_is_restarting")
+if is_reloading() then
+	finish_reload()
 	return
 end
 

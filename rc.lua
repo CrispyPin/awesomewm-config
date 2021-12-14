@@ -20,6 +20,8 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
+require("modules/smart_reload")
+
 require("modules/laptop_detector")
 require("modules/brightness")
 require("modules/battery")
@@ -91,7 +93,6 @@ menubar.menu_gen.all_menu_dirs = {
 	"/usr/share/applications/",
 	HOME_DIR .. ".local/share/applications/",
 	"/var/lib/flatpak/exports/share/applications",
---	"/var/lib/flatpak/app/", -- takes a long time to load
 }
 
 -- Create a textclock widget
@@ -241,10 +242,7 @@ globalkeys = gears.table.join(
 	-- Standard program
 	awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
 			{description = "open a terminal", group = "launcher"}),
-	awful.key({ modkey, "Control" }, "r", function ()
-		awful.spawn("touch " .. HOME_DIR .. ".awesome_is_restarting")
-		awesome.restart()
-		end,
+	awful.key({ modkey, "Control" }, "r", smart_reload,
 			{description = "reload awesome", group = "awesome"}),
 	--awful.key({ modkey, "Shift"   }, "q", awesome.quit,
 	--		{description = "quit awesome", group = "awesome"}),
