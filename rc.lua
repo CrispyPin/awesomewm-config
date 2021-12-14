@@ -69,11 +69,11 @@ awful.layout.layouts = {
 -- Menu
 -- Create a launcher widget and a main menu
 myawesomemenu = {
-   { "hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end },
-   { "manual", terminal .. " -e man awesome" },
-   { "edit config", editor_cmd .. " " .. awesome.conffile },
-   { "restart", awesome.restart },
-   { "quit", function() awesome.quit() end },
+	{ "hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end },
+	{ "manual", terminal .. " -e man awesome" },
+	{ "edit config", editor_cmd .. " " .. awesome.conffile },
+	{ "restart", awesome.restart },
+	{ "quit", function() awesome.quit() end },
 }
 
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
@@ -213,13 +213,13 @@ root.buttons(gears.table.join(
 -- Key bindings
 globalkeys = gears.table.join(
 	awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
-			  {description = "show help", group="awesome"}),
+			{description = "show help", group="awesome"}),
 	awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
-			  {description = "view previous", group = "tag"}),
+			{description = "view previous", group = "tag"}),
 	awful.key({ modkey,           }, "Right",  awful.tag.viewnext,
-			  {description = "view next", group = "tag"}),
+			{description = "view next", group = "tag"}),
 	awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
-			  {description = "go back", group = "tag"}),
+			{description = "go back", group = "tag"}),
 
 	awful.key({ modkey,           }, "j",
 		function ()
@@ -240,53 +240,51 @@ globalkeys = gears.table.join(
 
 	-- Standard program
 	awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
-			  {description = "open a terminal", group = "launcher"}),
+			{description = "open a terminal", group = "launcher"}),
 	awful.key({ modkey, "Control" }, "r", function ()
 		awful.spawn("touch " .. HOME_DIR .. ".awesome_is_restarting")
 		awesome.restart()
 		end,
-			  {description = "reload awesome", group = "awesome"}),
+			{description = "reload awesome", group = "awesome"}),
 	--awful.key({ modkey, "Shift"   }, "q", awesome.quit,
-	--		  {description = "quit awesome", group = "awesome"}),
+	--		{description = "quit awesome", group = "awesome"}),
 
 	awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)          end,
-			  {description = "increase master width factor", group = "layout"}),
+			{description = "increase master width factor", group = "layout"}),
 	awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)          end,
-			  {description = "decrease master width factor", group = "layout"}),
+			{description = "decrease master width factor", group = "layout"}),
 	awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1, nil, true) end,
-			  {description = "increase the number of master clients", group = "layout"}),
+			{description = "increase the number of master clients", group = "layout"}),
 	awful.key({ modkey, "Shift"   }, "l",     function () awful.tag.incnmaster(-1, nil, true) end,
-			  {description = "decrease the number of master clients", group = "layout"}),
+			{description = "decrease the number of master clients", group = "layout"}),
 	awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1, nil, true)    end,
-			  {description = "increase the number of columns", group = "layout"}),
+			{description = "increase the number of columns", group = "layout"}),
 	awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)    end,
-			  {description = "decrease the number of columns", group = "layout"}),
+			{description = "decrease the number of columns", group = "layout"}),
 	awful.key({ modkey,           }, "space", function () awful.layout.inc( 1)                end,
-			  {description = "select next", group = "layout"}),
+			{description = "select next", group = "layout"}),
 	awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1)                end,
-			  {description = "select previous", group = "layout"}),
+			{description = "select previous", group = "layout"}),
 
 	awful.key({ modkey, "Control" }, "n",
-			  function ()
-				  local c = awful.client.restore()
-				  -- Focus restored client
-				  if c then
-					c:emit_signal(
-						"request::activate", "key.unminimize", {raise = true}
-					)
-				  end
-			  end,
-			  {description = "restore minimized", group = "client"}),
+			function ()
+				local c = awful.client.restore()
+				-- Focus restored client
+				if c then
+					c:emit_signal("request::activate", "key.unminimize", {raise = true})
+				end
+			end,
+			{description = "restore minimized", group = "client"}),
 
 	-- Menubar
 	awful.key({ modkey }, "p", function() menubar.show() end,
-			  {description = "show the menubar", group = "launcher"}),
+			{description = "show the menubar", group = "launcher"}),
 	awful.key({ modkey }, "e", function() menubar.show() end,
-			  {description = "show the menubar", group = "launcher"}),
+			{description = "show the menubar", group = "launcher"}),
 	awful.key({ modkey }, "f", function() awful.spawn(file_manager) end,
-			  {description = "open files", group = "launcher"}),
+			{description = "open files", group = "launcher"}),
 	awful.key({ modkey }, "t", function() awful.spawn(terminal) end,
-			  {description = "open terminal", group = "launcher"}),
+			{description = "open terminal", group = "launcher"}),
 	-- alt-tab menu
 	awful.key({ "Mod1" }, "Tab", function()
 			awful.menu.client_list({ theme = { width = 250 }, menu_keys = {down = {"Tab"}} }) end,
@@ -353,46 +351,46 @@ for i = 1, 9 do
 	globalkeys = gears.table.join(globalkeys,
 		-- View tag only.
 		awful.key({ modkey }, "#" .. i + 9,
-				  function ()
-						local screen = awful.screen.focused()
-						local tag = screen.tags[i]
-						if tag then
-						   tag:view_only()
-						end
-				  end,
-				  {description = "view tag #"..i, group = "tag"}),
+				function ()
+					local screen = awful.screen.focused()
+					local tag = screen.tags[i]
+					if tag then
+						tag:view_only()
+					end
+				end,
+				{description = "view tag #"..i, group = "tag"}),
 		-- Toggle tag display.
 		awful.key({ modkey, "Control" }, "#" .. i + 9,
-				  function ()
-					  local screen = awful.screen.focused()
-					  local tag = screen.tags[i]
-					  if tag then
-						 awful.tag.viewtoggle(tag)
-					  end
-				  end,
-				  {description = "toggle tag #" .. i, group = "tag"}),
+				function ()
+					local screen = awful.screen.focused()
+					local tag = screen.tags[i]
+					if tag then
+						awful.tag.viewtoggle(tag)
+					end
+				end,
+				{description = "toggle tag #" .. i, group = "tag"}),
 		-- Move client to tag.
 		awful.key({ modkey, "Shift" }, "#" .. i + 9,
-				  function ()
-					  if client.focus then
-						  local tag = client.focus.screen.tags[i]
-						  if tag then
-							  client.focus:move_to_tag(tag)
-						  end
-					 end
-				  end,
-				  {description = "move focused client to tag #"..i, group = "tag"}),
+				function ()
+					if client.focus then
+						local tag = client.focus.screen.tags[i]
+						if tag then
+							client.focus:move_to_tag(tag)
+						end
+					end
+				end,
+				{description = "move focused client to tag #"..i, group = "tag"}),
 		-- Toggle tag on focused client.
 		awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9,
-				  function ()
-					  if client.focus then
-						  local tag = client.focus.screen.tags[i]
-						  if tag then
-							  client.focus:toggle_tag(tag)
-						  end
-					  end
-				  end,
-				  {description = "toggle focused client on tag #" .. i, group = "tag"})
+				function ()
+					if client.focus then
+						local tag = client.focus.screen.tags[i]
+						if tag then
+							client.focus:toggle_tag(tag)
+						end
+					end
+				end,
+				{description = "toggle focused client on tag #" .. i, group = "tag"})
 	)
 end
 
@@ -418,37 +416,39 @@ root.keys(globalkeys)
 awful.rules.rules = {
 	-- All clients will match this rule.
 	{ rule = { },
-	  properties = { border_width = beautiful.border_width,
-					 border_color = beautiful.border_normal,
-					 focus = awful.client.focus.filter,
-					 raise = true,
-					 keys = clientkeys,
-					 buttons = clientbuttons,
-					 screen = awful.screen.preferred,
-					 placement = awful.placement.no_overlap+awful.placement.no_offscreen
+	properties = {
+			border_width = beautiful.border_width,
+			border_color = beautiful.border_normal,
+			focus = awful.client.focus.filter,
+			raise = true,
+			keys = clientkeys,
+			buttons = clientbuttons,
+			screen = awful.screen.preferred,
+			placement = awful.placement.no_overlap+awful.placement.no_offscreen
 	 }
 	},
 
-    -- Floating clients.
-    { rule_any = {
-        instance = {
-        },
-        class = {
-          "Arandr",
+	-- Floating clients.
+	{ rule_any = {
+		instance = {
+			"pavucontrol",
 		},
-        -- Note that the name property shown in xprop might be set slightly after creation of the client
-        -- and the name shown there might not match defined rules here.
-        name = {
-          "Event Tester",  -- xev
-		  "Steam",
-		  "Friends List",
-        },
-      }, properties = { floating = true, placement = awful.placement.no_offscreen }},
+		class = {
+			"Arandr",
+		},
+		-- Note that the name property shown in xprop might be set slightly after creation of the client
+		-- and the name shown there might not match defined rules here.
+		name = {
+			"Event Tester", -- xev
+			"Steam",
+			"Friends List",
+		},
+	}, properties = { floating = true, placement = awful.placement.no_offscreen }},
 
-    -- Add titlebars to normal clients and dialogs
-    { rule_any = {type = { "normal", "dialog" }
-      }, properties = { titlebars_enabled = true }
-    },
+	-- Add titlebars to normal clients and dialogs
+	{ rule_any = {type = { "normal", "dialog" }
+		}, properties = { titlebars_enabled = true }
+	},
 }
 
 -- Signal function to execute when a new client appears.
@@ -458,8 +458,8 @@ client.connect_signal("manage", function (c)
 	-- if not awesome.startup then awful.client.setslave(c) end
 
 	if awesome.startup
-	  and not c.size_hints.user_position
-	  and not c.size_hints.program_position then
+		and not c.size_hints.user_position
+		and not c.size_hints.program_position then
 		-- Prevent clients from being unreachable after screen count changes.
 		awful.placement.no_offscreen(c)
 	end
