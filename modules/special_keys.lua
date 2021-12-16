@@ -18,7 +18,7 @@ special_keys = gears.table.join(
 		awful.spawn("amixer sset Master 5-") end,
 	{description = "Lower volume", group = "Settings"}),
 
-	awful.key({"Mod4"}, "y", function ()
-		test() end,
+	awful.key({"Ctrl"}, "Print", function ()
+		awful.util.spawn_with_shell("maim -s | xclip -selection clipboard -t image/png") end,
 	{description = "TEST", group = "Settings"})
 	)
