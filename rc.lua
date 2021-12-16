@@ -30,7 +30,6 @@ modkey = "Mod4" -- super
 require("modules/navigation_keys")
 require("modules/special_keys")
 
-
 -- Handle runtime errors after startup
 do
 	local in_error = false
@@ -51,8 +50,7 @@ end
 local theme_path = CONFIG_DIR .. "/themes/default/"
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(theme_path .. "theme.lua")
-naughty.notify({title = "Theme loaded", text = tostring(theme_path) })
-
+naughty.notify({title = "Theme loaded", text = tostring(theme_path), icon = theme_path .. "icon.png", screen = 1})
 
 -- This is used later as the default terminal and editor to run.
 terminal = "alacritty"
@@ -454,6 +452,9 @@ client.connect_signal("manage", function (c)
 	-- Set the windows at the slave,
 	-- i.e. put it at the end of others instead of setting it master.
 	-- if not awesome.startup then awful.client.setslave(c) end
+	c.shape = function (cr, w, h)
+		gears.shape.rounded_rect(cr, w, h, 5)
+	end
 
 	if awesome.startup
 		and not c.size_hints.user_position
@@ -473,3 +474,11 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 
 -- awful.spawn.raise_or_spawn("alacritty -e fish -C neofetch")
 require("modules/autostart")
+
+
+-- Run garbage collector regularly to prevent memory leaks
+gears.timer {
+	timeout = 60,
+	autostart = true,
+	callback = function() collectgarbage() end
+}

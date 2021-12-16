@@ -8,6 +8,7 @@ end
 
 awful.spawn("picom -b") -- compositor
 awful.spawn(HOME_DIR .. ".screenlayout/big-big-small.sh") -- xrandr config
+awful.spawn("/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1") -- authentication popup (in pop os)
 
 --awful.spawn("discord")
 awful.spawn("discord-ptb")
@@ -16,3 +17,5 @@ awful.spawn("gtk-launch com.spotify.Client")
 awful.spawn("firefox")
 
 --awful.spawn("alacritty")
+
+awful.spawn("redshift-gtk")

@@ -58,16 +58,16 @@ theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
 
 -- Variables set for theming notifications:
 -- notification_font
--- notification_[bg|fg]
--- notification_[width|height|margin]
 -- notification_[border_color|border_width|shape|opacity]
 theme.notification_font = "freesans 9"
 theme.notification_bg = "#224455"
-theme.notification_fg = "#ddffff"
-theme.notification_border_color = "#00ff00"
+theme.notification_fg = "#ccbbff"
+theme.notification_border_color = "#5533ff"
 theme.notification_border_width = dpi(4)
-theme.notification_height = 64
+theme.notification_margin = 8
 theme.notification_width = 512
+theme.notification_icon_size = 64
+theme.notification_height = 64 + theme.notification_margin * 2
 theme.notification_opacity = 0.8
 
 -- Variables set for theming the menu:

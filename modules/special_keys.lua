@@ -16,5 +16,9 @@ special_keys = gears.table.join(
 
 	awful.key({}, "XF86AudioLowerVolume", function ()
 		awful.spawn("amixer sset Master 5-") end,
-	{description = "Lower volume", group = "Settings"})
+	{description = "Lower volume", group = "Settings"}),
+
+	awful.key({"Mod4"}, "y", function ()
+		test() end,
+	{description = "TEST", group = "Settings"})
 	)
