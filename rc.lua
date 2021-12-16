@@ -21,10 +21,7 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 require("awful.hotkeys_popup.keys")
 
 require("modules/smart_reload")
-
 require("modules/laptop_detector")
-require("modules/brightness")
-require("modules/battery")
 
 modkey = "Mod4" -- super
 require("modules/navigation_keys")
@@ -45,12 +42,14 @@ do
 	end)
 end
 
--- Variable definitions
 
+-- Theme
 local theme_path = CONFIG_DIR .. "/themes/default/"
--- Themes define colours, icons, font and wallpapers.
 beautiful.init(theme_path .. "theme.lua")
 naughty.notify({title = "Theme loaded", text = tostring(theme_path), icon = theme_path .. "icon.png", screen = 1})
+require("modules/brightness")
+require("modules/battery")
+
 
 -- This is used later as the default terminal and editor to run.
 terminal = "alacritty"
@@ -453,7 +452,7 @@ client.connect_signal("manage", function (c)
 	-- i.e. put it at the end of others instead of setting it master.
 	-- if not awesome.startup then awful.client.setslave(c) end
 	c.shape = function (cr, w, h)
-		gears.shape.rounded_rect(cr, w, h, 5)
+		gears.shape.rounded_rect(cr, w, h, 5) -- rounded corners
 	end
 
 	if awesome.startup
