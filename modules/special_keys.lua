@@ -19,6 +19,10 @@ special_keys = gears.table.join(
 	{description = "Lower volume", group = "Settings"}),
 
 	awful.key({"Ctrl"}, "Print", function ()
-		awful.util.spawn_with_shell("maim -s | xclip -selection clipboard -t image/png") end,
+		awful.util.spawn(CONFIG_DIR .. "utils/screenshot_selection.sh") end,
+	{description = "TEST", group = "Settings"}),
+
+	awful.key({ }, "Print", function ()
+		awful.util.spawn(CONFIG_DIR .. "utils/screenshot_full.sh") end,
 	{description = "TEST", group = "Settings"})
 	)
