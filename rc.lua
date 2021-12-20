@@ -216,8 +216,8 @@ globalkeys = gears.table.join(
 			{description = "view previous", group = "tag"}),
 	awful.key({ modkey,           }, "Right",  awful.tag.viewnext,
 			{description = "view next", group = "tag"}),
-	awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
-			{description = "go back", group = "tag"}),
+	--awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
+	--		{description = "go back", group = "tag"}),
 
 	awful.key({ modkey,           }, "j",
 		function ()
@@ -272,7 +272,7 @@ globalkeys = gears.table.join(
 			{description = "restore minimized", group = "client"}),
 
 	-- Menubar
-	awful.key({ modkey }, "p", function() menubar.show() end,
+	awful.key({ modkey }, "Escape", function() menubar.show() end,
 			{description = "show the menubar", group = "launcher"}),
 	awful.key({ modkey }, "e", function() menubar.show() end,
 			{description = "show the menubar", group = "launcher"}),
