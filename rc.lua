@@ -60,8 +60,8 @@ editor_cmd = terminal .. " -e " .. editor
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
-	awful.layout.suit.fair,
-	-- awful.layout.suit.tile,
+	--awful.layout.suit.fair,
+	awful.layout.suit.tile,
 	-- awful.layout.suit.floating,
 }
 
@@ -71,7 +71,7 @@ myawesomemenu = {
 	{ "hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end },
 	{ "manual", terminal .. " -e man awesome" },
 	{ "edit config", editor_cmd .. " " .. awesome.conffile },
-	{ "restart", awesome.restart },
+	{ "restart", smart_reload },
 	{ "quit", function() awesome.quit() end },
 }
 
