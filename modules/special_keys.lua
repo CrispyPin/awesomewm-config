@@ -27,6 +27,6 @@ special_keys = gears.table.join(
 	{description = "Screenshot selection", group = "Settings"}),
 
 	awful.key({"Shift"}, "Print", function ()
-		awful.util.spawn("deepin-screen-recorder") end,
+		awful.util.spawn(CONFIG_DIR .. "utils/record_mp4.sh") end,
 	{description = "Screen recording", group = "Settings"})
 	)
