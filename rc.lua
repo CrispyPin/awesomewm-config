@@ -61,8 +61,17 @@ editor_cmd = terminal .. " -e " .. editor
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
 	--awful.layout.suit.fair,
-	awful.layout.suit.tile,
-	-- awful.layout.suit.floating,
+	--awful.layout.suit.tile,
+	awful.layout.suit.corner.nw,
+	--awful.layout.suit.floating,
+}
+awful.menu.menu_keys = {
+	up = { "Up", "k", "q", "w" },
+	down = { "Down", "j", "Tab", "s"},
+	back = { "Left", "h", "a"},
+	exec = { "Return" },
+	enter = { "Right", "l", "d"},
+	close = { "Escape" },
 }
 
 -- Menu
@@ -71,8 +80,9 @@ myawesomemenu = {
 	{ "hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end },
 	{ "manual", terminal .. " -e man awesome" },
 	{ "edit config", editor_cmd .. " " .. awesome.conffile },
-	{ "restart", smart_reload },
-	{ "quit", function() awesome.quit() end },
+	{ "reload", smart_reload },
+	{ "log out", function() awesome.quit() end },
+	{ "shut down", {{ "really?", function() awful.spawn("shutdown now") end }} },
 }
 
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
@@ -282,8 +292,8 @@ globalkeys = gears.table.join(
 			{description = "open terminal", group = "launcher"}),
 	-- alt-tab menu
 	awful.key({ "Mod1" }, "Tab", function()
-			awful.menu.client_list({ theme = { width = 250 }, menu_keys = {down = {"Tab"}} }) end,
-			{description = "open window list", group = "launcher"})
+			awful.menu.client_list({ theme = { width = 256 } }) end,
+			{description = "open client list", group = "launcher"})
 	
 	)
 globalkeys = gears.table.join(globalkeys, special_keys, navigation_keys)
@@ -452,7 +462,9 @@ client.connect_signal("manage", function (c)
 	-- i.e. put it at the end of others instead of setting it master.
 	-- if not awesome.startup then awful.client.setslave(c) end
 	c.shape = function (cr, w, h)
-		gears.shape.rounded_rect(cr, w, h, 5) -- rounded corners
+		-- rounded corners
+		--gears.shape.rounded_rect(cr, w, h, 5)
+		gears.shape.octogon(cr, w, h, 8)
 	end
 
 	if awesome.startup
