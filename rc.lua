@@ -2,6 +2,7 @@
 -- found (e.g. lgi). If LuaRocks is not installed, do nothing.
 pcall(require, "luarocks.loader")
 
+local socket = require("socket") -- for precise time info
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
@@ -69,7 +70,7 @@ awful.menu.menu_keys = {
 	up = { "Up", "k", "q", "w" },
 	down = { "Down", "j", "Tab", "s"},
 	back = { "Left", "h", "a"},
-	exec = { "Return" },
+	exec = { "Return", "Space" },
 	enter = { "Right", "l", "d"},
 	close = { "Escape" },
 }
@@ -105,6 +106,8 @@ menubar.menu_gen.all_menu_dirs = {
 -- Create a textclock widget
 mytextclock = wibox.widget.textclock()
 
+local last_tag_scroll_time = socket.gettime()
+local min_tag_scroll_time = 0.05
 
 -- Create a wibox for each screen and add it
 -- buttons for each tag widget
@@ -122,10 +125,20 @@ local taglist_buttons = gears.table.join(
 								end
 							end),
 	awful.button({ }, 5, function (t)
-		awful.tag.viewnext()
+		-- switch to next tag if enough time has passed
+		local tm = socket.gettime()
+		if tm - last_tag_scroll_time >= min_tag_scroll_time then
+			awful.tag.viewnext()
+			last_tag_scroll_time = tm
+		end
 	end),
 	awful.button({ }, 4, function (t)
-		awful.tag.viewprev()
+		-- switch to prev tag if enough time has passed
+		local tm = socket.gettime()
+		if tm - last_tag_scroll_time >= min_tag_scroll_time then
+			awful.tag.viewprev()
+			last_tag_scroll_time = tm
+		end
 	end)
 )
 
@@ -440,6 +453,7 @@ awful.rules.rules = {
 		},
 		class = {
 			"Arandr",
+			--"Godot_Engine",
 		},
 		-- Note that the name property shown in xprop might be set slightly after creation of the client
 		-- and the name shown there might not match defined rules here.
@@ -447,12 +461,20 @@ awful.rules.rules = {
 			"Event Tester", -- xev
 			"Steam",
 			"Friends List",
+			"Beataroni",
+			"ovr-utils",
+			"Godot",
 		},
 	}, properties = { floating = true, placement = awful.placement.no_offscreen }},
 
 	-- Add titlebars to normal clients and dialogs
 	{ rule_any = {type = { "normal", "dialog" }
 		}, properties = { titlebars_enabled = true }
+	},
+	{ rule = {
+		class = "/home/crispypin/bin/ovr-utils/ovr-utils.x86_64",
+		},
+	properties = { floating = true, width = 16, height = 16, tag = "9"}
 	},
 }
 
