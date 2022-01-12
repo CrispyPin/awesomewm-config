@@ -13,5 +13,5 @@ read -r X Y W H G ID < <(echo $slop)
 
 videofile=$(xdg-user-dir VIDEOS)/selection_$(date "+%Y.%m.%d-%H:%M:%S").mp4
 
-ffmpeg -y -video_size "$W"x"$H" -f x11grab -i $DISPLAY+$X,$Y $videofile &
+ffmpeg -y -video_size "$W"x"$H" -f x11grab -framerate 60 -i $DISPLAY+$X,$Y $videofile &
 echo $! > $statusfile

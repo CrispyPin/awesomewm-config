@@ -483,11 +483,11 @@ client.connect_signal("manage", function (c)
 	-- Set the windows at the slave,
 	-- i.e. put it at the end of others instead of setting it master.
 	-- if not awesome.startup then awful.client.setslave(c) end
-	c.shape = function (cr, w, h)
+	--c.shape = function (cr, w, h)
 		-- rounded corners
 		--gears.shape.rounded_rect(cr, w, h, 5)
-		gears.shape.octogon(cr, w, h, 8)
-	end
+	--	gears.shape.octogon(cr, w, h, 8)
+	--end
 
 	if awesome.startup
 		and not c.size_hints.user_position

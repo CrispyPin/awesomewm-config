@@ -7,6 +7,7 @@ if is_reloading() then
 end
 
 awful.spawn("picom -b") -- compositor
+awful.spawn("numlockx on") -- numlock
 awful.spawn(CONFIG_DIR .. "utils/xrandr_conf.sh") -- xrandr config
 awful.spawn(CONFIG_DIR .. "utils/xcape_conf.sh")  -- xcape config
 awful.spawn("/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1") -- authentication popup (in pop os)

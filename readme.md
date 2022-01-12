@@ -1,4 +1,5 @@
 # awesomewm config info (not implemented yet)
+This is a draft for what I want in the config, and may change.
 
 # widgets
 - brightness circle
