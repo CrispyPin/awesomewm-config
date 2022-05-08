@@ -13,7 +13,7 @@ fi
 slop=$(slop -f "%x %y %w %h %g %i" --color=0.8,0.4,1.0,1.0 -t 16) || exit 1
 read -r X Y W H G ID < <(echo $slop)
 
-videofile=$(xdg-user-dir VIDEOS)/sel_$(date "+%Y.%m.%d-%H:%M:%S").mp4
+videofile=$(xdg-user-dir VIDEOS)/sel_$(date "+%Y-%m-%d_%H.%M.%S").mp4
 logfile="/tmp/screen_recorder_ffmpeg.log"
 
 # make sure selection width and height is even

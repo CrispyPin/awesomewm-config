@@ -9,24 +9,21 @@ local theme_path = awful.util.get_configuration_dir() .. "/themes/purple/"
 
 local theme = {}
 
--- theme.font          = "sans 9"
--- theme.font          = "source code pro bold 9"
 theme.font          = "monospace bold 10"
---theme.font          = "comic mono 10"
 
 theme.bg_normal     = "#203"
 theme.bg_focus      = "#b6f" -- in menus
 theme.bg_urgent     = "#e44"
 theme.bg_minimize   = "#444"
-theme.bg_systray    = "#111"
+theme.bg_systray    = "#111111"
 
 theme.fg_normal     = "#c9f"
-theme.fg_focus      = "#fff"
-theme.fg_urgent     = "#fff"
+theme.fg_focus      = "#ffffff"
+theme.fg_urgent     = "#ffffff"
 theme.fg_minimize   = "#000"
 
-theme.useless_gap   = 0.5--1.5--dpi(1.5)
-theme.border_width  = dpi(1)
+theme.useless_gap   = 0--.5--1.5--dpi(1.5)
+theme.border_width  = 0
 theme.border_normal = "#4400bb"--"#0066bb"
 theme.border_focus  = "#ff8844"--"#00ccff"
 theme.border_marked = "#882211"

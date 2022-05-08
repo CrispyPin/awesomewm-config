@@ -2,7 +2,6 @@
 -- found (e.g. lgi). If LuaRocks is not installed, do nothing.
 pcall(require, "luarocks.loader")
 
-local socket = require("socket") -- for precise time info
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
@@ -51,10 +50,9 @@ naughty.notify({title = "Theme loaded", text = tostring(theme_path), icon = them
 require("modules/brightness")
 require("modules/battery")
 
-
 -- This is used later as the default terminal and editor to run.
-terminal = "alacritty"
-file_manager = "nautilus"
+terminal = "kitty"
+file_manager = "pcmanfm"
 editor = os.getenv("code") or "nano"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -83,16 +81,20 @@ myawesomemenu = {
 	{ "edit config", editor_cmd .. " " .. awesome.conffile },
 	{ "reload", smart_reload },
 	{ "log out", function() awesome.quit() end },
-	{ "shut down", {{ "really?", function() awful.spawn("shutdown now") end }} },
+	{ "shut down", {
+		{ "now", function() awful.spawn("shutdown now") end },
+		{ "in 60s", function() awful.spawn("shutdown") end }
+	} },
 }
 
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
-									{ "open terminal", terminal }
+									{ "open terminal", terminal },
+									{ "open file manager", file_manager },
+									{ "close menu", function() end }
 								  }
 						})
 
-mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
-									 menu = mymainmenu })
+mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon, menu = mymainmenu })
 
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
@@ -100,14 +102,11 @@ menubar.show_categories = false
 menubar.menu_gen.all_menu_dirs = {
 	"/usr/share/applications/",
 	HOME_DIR .. ".local/share/applications/",
-	"/var/lib/flatpak/exports/share/applications",
+	--"/var/lib/flatpak/exports/share/applications",
 }
 
 -- Create a textclock widget
 mytextclock = wibox.widget.textclock()
-
-local last_tag_scroll_time = socket.gettime()
-local min_tag_scroll_time = 0.05
 
 -- Create a wibox for each screen and add it
 -- buttons for each tag widget
@@ -125,20 +124,10 @@ local taglist_buttons = gears.table.join(
 								end
 							end),
 	awful.button({ }, 5, function (t)
-		-- switch to next tag if enough time has passed
-		local tm = socket.gettime()
-		if tm - last_tag_scroll_time >= min_tag_scroll_time then
-			awful.tag.viewnext()
-			last_tag_scroll_time = tm
-		end
+		awful.tag.viewnext()
 	end),
 	awful.button({ }, 4, function (t)
-		-- switch to prev tag if enough time has passed
-		local tm = socket.gettime()
-		if tm - last_tag_scroll_time >= min_tag_scroll_time then
-			awful.tag.viewprev()
-			last_tag_scroll_time = tm
-		end
+		awful.tag.viewprev()
 	end)
 )
 
@@ -471,6 +460,9 @@ awful.rules.rules = {
 	{ rule_any = {type = { "normal", "dialog" }
 		}, properties = { titlebars_enabled = true }
 	},
+	{ rule_any = {name = { "Launching steam" }
+		}, properties = { focus=false, raise=false }
+	},
 	{ rule = {
 		class = "/home/crispypin/bin/ovr-utils/ovr-utils.x86_64",
 		},
@@ -505,7 +497,7 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
--- awful.spawn.raise_or_spawn("alacritty -e fish -C neofetch")
+
 require("modules/autostart")
 
 

@@ -8,7 +8,7 @@ This is a draft for what I want in the config, and may change.
 - battery display
 - volume slider
 	- scroll to change master volume
-	- click for pavuctl or custom menu
+	- click for ncpamixer
 
 
 
@@ -29,7 +29,6 @@ alt+tab   = list of windows on this tag
 super+tab = list of all windows
 super+esc = previous tag
 super     = launch menu toggle
-super+B   = toggle title bars
 
 super+Q = quit application
 super+shift+F = fullscreen toggle
@@ -44,8 +43,7 @@ super+enter = terminal
 
 
 # always
-1px borders
-shork background
+no borders
 top bar info:
 - menu
 - tags
@@ -53,15 +51,10 @@ top bar info:
 
 - open clients on this screen+tag
 
-- system stats graphs (open htop or similar on click)
-	- CPU load
-	- GPU load
-	- RAM usage
-	- CPU temp
 - system tray
-- network widget
 - sound widget
 - media play/pause/skip
+- network widget (laptop)
 - brightness (laptop)
 - battery (laptop)
 - time & date
@@ -92,4 +85,13 @@ shortcuts in top bar for:
 - run prompt
 window title bars (close, maximise, minimise, move to next/prev tag)
 focus on click
+
+# new shortcuts?
+super+H = shortcut list
+super+AD = switch tags
+super+WS = switch window
+super+space+AD = move window through tags
+super+space+WS = move window locally
+super+alt+WASD
+super+ZC = resize width
 
