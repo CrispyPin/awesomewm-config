@@ -19,7 +19,11 @@ special_keys = gears.table.join(
 
 	awful.key({modkey}, "Print", function ()
 		awful.util.spawn(CONFIG_DIR .. "utils/screenshot_active.sh") end,
-	{description = "Screenshot active", group = "screenshot"})
+	{description = "Screenshot active", group = "screenshot"}),
+
+	awful.key({modkey}, "F1", function ()
+		awful.util.spawn("/home/crispypin/dotfiles/scripts/restart_vr.sh") end,
+	{description = "Restart SteamVR", group = "launcher"})
 
 )
 

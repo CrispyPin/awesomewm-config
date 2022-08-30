@@ -90,6 +90,7 @@ myawesomemenu = {
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
 									{ "open terminal", terminal },
 									{ "open file manager", file_manager },
+									{ "OVR Utils", function() awful.spawn("./proj/godot/ovr-utils/builds/linux/ovr-utils.x86_64") end },
 									{ "close menu", function() end }
 								  }
 						})
@@ -224,8 +225,10 @@ root.buttons(gears.table.join(
 globalkeys = gears.table.join(
 	awful.key({ modkey }, "s",      hotkeys_popup.show_help, {description = "show help", group="awesome"}),
 	awful.key({ modkey }, "Left",   awful.tag.viewprev, {description = "view previous", group = "tag"}),
+	awful.key({ modkey, "Control" }, "Left",   awful.tag.viewprev, {description = "view previous", group = "tag"}),
 	awful.key({ modkey }, "a",   awful.tag.viewprev, {description = "view previous", group = "tag"}),
 	awful.key({ modkey }, "Right",  awful.tag.viewnext, {description = "view next", group = "tag"}),
+	awful.key({ modkey, "Control" }, "Right",  awful.tag.viewnext, {description = "view next", group = "tag"}),
 	awful.key({ modkey }, "d",  awful.tag.viewnext, {description = "view next", group = "tag"}),
 	--awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
 	--		{description = "go back", group = "tag"}),
@@ -490,6 +493,14 @@ end)
 
 -- Enable sloppy focus, so that focus follows mouse.
 client.connect_signal("mouse::enter", function(c)
+	if client.focus ~= nil then
+		focus_class = client.focus.class
+		-- naughty.notify({title = focus_class})
+		if focus_class == "steam_app_361420" or -- astroneer
+			focus_class == "minecraft" then
+			return
+		end
+	end
 	c:emit_signal("request::activate", "mouse_enter", {raise = false})
 end)
 
