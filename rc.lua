@@ -30,16 +30,15 @@ require("modules/special_keys")
 -- Handle runtime errors after startup
 do
 	local in_error = false
-	awesome.connect_signal("debug::error", function (err)
-		-- Make sure we don't go into an endless error loop
-		if in_error then return end
-		in_error = true
-
-		naughty.notify({preset = naughty.config.presets.critical,
-						 title = "Oops, an error happened!",
-						 text = tostring(err)})
-		in_error = false
-	end)
+	awesome.connect_signal("debug::error",
+		function(err)
+			-- avoid endless error loop
+			if in_error then return end
+			in_error = true
+			naughty.notify({preset = naughty.config.presets.critical, title = "Error loading config!", text = tostring(err)})
+			in_error = false
+		end
+	)
 end
 
 
@@ -50,20 +49,11 @@ naughty.notify({title = "Theme loaded", text = tostring(theme_path), icon = them
 require("modules/brightness")
 require("modules/battery")
 
--- This is used later as the default terminal and editor to run.
+-- default apps
 terminal = "kitty"
 file_manager = "pcmanfm"
-editor = os.getenv("code") or "nano"
-editor_cmd = terminal .. " -e " .. editor
 
 
--- Table of layouts to cover with awful.layout.inc, order matters.
-awful.layout.layouts = {
-	--awful.layout.suit.fair,
-	--awful.layout.suit.tile,
-	awful.layout.suit.corner.nw,
-	--awful.layout.suit.floating,
-}
 awful.menu.menu_keys = {
 	up = {"Up", "k", "q", "w"},
 	down = {"Down", "j", "Tab", "s"},
@@ -75,10 +65,8 @@ awful.menu.menu_keys = {
 
 -- Menu
 -- Create a launcher widget and a main menu
-myawesomemenu = {
+local system_menu = {
 	{"hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end},
-	{"manual", terminal .. " -e man awesome"},
-	{"edit config", editor_cmd .. " " .. awesome.conffile},
 	{"reload", smart_reload},
 	{"log out", function() awesome.quit() end},
 	{"shut down", {
@@ -87,15 +75,15 @@ myawesomemenu = {
 	}},
 }
 
-mymainmenu = awful.menu({items = {{"awesome", myawesomemenu, beautiful.awesome_icon},
-									{"open terminal", terminal},
-									{"open file manager", file_manager},
-									{"OVR Utils", function() awful.spawn("./proj/godot/ovr-utils/builds/linux/ovr-utils.x86_64") end},
-									{"close menu", function() end}
-								}
-						})
+main_menu = awful.menu({items ={
+	{"system", system_menu, beautiful.awesome_icon},
+	{"terminal", terminal},
+	{"file manager", file_manager},
+	{"OVR Utils", function() awful.spawn("./proj/godot/ovr-utils/builds/linux/ovr-utils.x86_64") end},
+	{"close menu", function() end}
+}})
 
-mylauncher = awful.widget.launcher({image = beautiful.awesome_icon, menu = mymainmenu})
+mylauncher = awful.widget.launcher({image = beautiful.awesome_icon, menu = main_menu})
 
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
@@ -124,17 +112,17 @@ local taglist_buttons = gears.table.join(
 									client.focus:toggle_tag(t)
 								end
 							end),
-	awful.button({}, 5, function (t)
+	awful.button({}, 5, function(t)
 		awful.tag.viewnext()
 	end),
-	awful.button({}, 4, function (t)
+	awful.button({}, 4, function(t)
 		awful.tag.viewprev()
 	end)
 )
 
 -- main section of top bar
 local tasklist_buttons = gears.table.join(
-	awful.button({}, 1, function (c)
+	awful.button({}, 1, function(c)
 		if c == client.focus then
 			c.minimized = true
 		else
@@ -151,7 +139,6 @@ local tasklist_buttons = gears.table.join(
 )
 
 local function set_wallpaper(s)
-	-- Wallpaper
 	if beautiful.wallpaper then
 		local wallpaper = beautiful.wallpaper
 		-- If wallpaper is a function, call it with the screen
@@ -163,23 +150,22 @@ local function set_wallpaper(s)
 end
 
 awful.screen.connect_for_each_screen(function(s)
-	-- Wallpaper
 	set_wallpaper(s)
 
 	-- Each screen has its own tag table.
-	awful.tag({"1", "2", "3", "4", "5", "6", "7", "8", "9"}, s, awful.layout.layouts[1])
+	awful.tag({"1", "2", "3", "4", "5", "6", "7", "8", "9"}, s, awful.layout.suit.corner.nw)
 
 	-- Create a taglist widget
 	s.mytaglist = awful.widget.taglist {
-		screen= s,
-		filter= awful.widget.taglist.filter.all,
+		screen = s,
+		filter = awful.widget.taglist.filter.all,
 		buttons = taglist_buttons
 	}
 
 	-- Create a tasklist widget
 	s.mytasklist = awful.widget.tasklist {
-		screen= s,
-		filter= awful.widget.tasklist.filter.currenttags,
+		screen = s,
+		filter = awful.widget.tasklist.filter.currenttags,
 		buttons = tasklist_buttons
 	}
 
@@ -208,12 +194,10 @@ end)
 
 -- Mouse bindings for background
 root.buttons(gears.table.join(
-	awful.button({}, 3, function () mymainmenu:toggle() end)-- rmb
-	--awful.button({}, 4, awful.tag.viewnext),
-	--awful.button({}, 5, awful.tag.viewprev)-- scroll wheel on bg
+	awful.button({}, 3, function() main_menu:toggle() end)
 ))
 
--- Key bindings
+-- global key bindings
 local globalkeys = gears.table.join(
 	awful.key({modkey}, "s",hotkeys_popup.show_help, {description = "show help", group="awesome"}),
 	awful.key({modkey}, "Left", awful.tag.viewprev, {description = "view previous", group = "tag"}),
@@ -224,41 +208,41 @@ local globalkeys = gears.table.join(
 	awful.key({modkey}, "d",awful.tag.viewnext, {description = "view next", group = "tag"}),
 
 	awful.key({modkey}, "j",
-		function ()
+		function()
 			awful.client.focus.byidx(1)
 		end,
 		{description = "focus next by index", group = "client"}
 	),
 	awful.key({modkey}, "k",
-		function ()
+		function()
 			awful.client.focus.byidx(-1)
 		end,
 		{description = "focus previous by index", group = "client"}
 	),
-	awful.key({modkey}, "Return", function () awful.spawn(terminal) end,
-			{description = "open a terminal", group = "launcher"}),
+	awful.key({modkey}, "Return", function() awful.spawn(terminal) end,
+			{description = "open terminal", group = "launcher"}),
 	awful.key({modkey, "Control"}, "r", smart_reload,
 			{description = "reload awesome", group = "awesome"}),
 
-	awful.key({modkey}, "l", function () awful.tag.incmwfact(0.05)end,
+	awful.key({modkey}, "l", function() awful.tag.incmwfact(0.05) end,
 			{description = "increase master width factor", group = "layout"}),
-	awful.key({modkey}, "h", function () awful.tag.incmwfact(-0.05)end,
+	awful.key({modkey}, "h", function() awful.tag.incmwfact(-0.05) end,
 			{description = "decrease master width factor", group = "layout"}),
-	awful.key({modkey, "Shift"}, "h", function () awful.tag.incnmaster(1, nil, true) end,
+	awful.key({modkey, "Shift"}, "h", function() awful.tag.incnmaster(1, nil, true) end,
 			{description = "increase the number of master clients", group = "layout"}),
-	awful.key({modkey, "Shift"}, "l", function () awful.tag.incnmaster(-1, nil, true) end,
+	awful.key({modkey, "Shift"}, "l", function() awful.tag.incnmaster(-1, nil, true) end,
 			{description = "decrease the number of master clients", group = "layout"}),
-	awful.key({modkey, "Control"}, "h", function () awful.tag.incncol(1, nil, true)end,
+	awful.key({modkey, "Control"}, "h", function() awful.tag.incncol(1, nil, true) end,
 			{description = "increase the number of columns", group = "layout"}),
-	awful.key({modkey, "Control"}, "l", function () awful.tag.incncol(-1, nil, true)end,
+	awful.key({modkey, "Control"}, "l", function() awful.tag.incncol(-1, nil, true) end,
 			{description = "decrease the number of columns", group = "layout"}),
-	awful.key({modkey}, "space", function () awful.layout.inc(1)end,
+	awful.key({modkey}, "space", function() awful.layout.inc(1) end,
 			{description = "select next", group = "layout"}),
-	awful.key({modkey, "Shift"}, "space", function () awful.layout.inc(-1)end,
+	awful.key({modkey, "Shift"}, "space", function() awful.layout.inc(-1) end,
 			{description = "select previous", group = "layout"}),
 
 	awful.key({modkey, "Control"}, "n",
-			function ()
+			function()
 				local c = awful.client.restore()
 				-- Focus restored client
 				if c then
@@ -286,38 +270,38 @@ globalkeys = gears.table.join(globalkeys, special_keys, navigation_keys)
 
 local clientkeys = gears.table.join(
 	awful.key({modkey, "Shift"}, "f",
-		function (c)
+		function(c)
 			c.fullscreen = not c.fullscreen
 			c:raise()
 		end,
 		{description = "toggle fullscreen", group = "client"}),
 	awful.key({modkey}, "q",
-			function (c) c:kill() end,
+			function(c) c:kill() end,
 			{description = "close", group = "client"}),
 	awful.key({modkey, "Control"}, "space",
 			awful.client.floating.toggle ,
 			{description = "toggle floating", group = "client"}),
 	awful.key({modkey, "Shift"}, "t",
-			function (c) c.ontop = not c.ontop end,
+			function(c) c.ontop = not c.ontop end,
 			{description = "toggle keep on top", group = "client"}),
 	awful.key({modkey}, "n",
-		function (c) c.minimized = true end ,
+		function(c) c.minimized = true end ,
 		{description = "minimize", group = "client"}),
 
 	awful.key({modkey}, "m",
-		function (c)
+		function(c)
 			c.maximized = not c.maximized
 			c:raise()
 		end ,
 		{description = "(un)maximize", group = "client"}),
 	awful.key({modkey, "Control"}, "m",
-		function (c)
+		function(c)
 			c.maximized_vertical = not c.maximized_vertical
 			c:raise()
 		end ,
 		{description = "(un)maximize vertically", group = "client"}),
 	awful.key({modkey, "Shift"}, "m",
-		function (c)
+		function(c)
 			c.maximized_horizontal = not c.maximized_horizontal
 			c:raise()
 		end ,
@@ -331,7 +315,7 @@ for i = 1, 9 do
 	globalkeys = gears.table.join(globalkeys,
 		-- View tag only.
 		awful.key({modkey}, "#" .. i + 9,
-				function ()
+				function()
 					local screen = awful.screen.focused()
 					local tag = screen.tags[i]
 					if tag then
@@ -341,7 +325,7 @@ for i = 1, 9 do
 				{description = "view tag #"..i, group = "tag"}),
 		-- Toggle tag display.
 		awful.key({modkey, "Control"}, "#" .. i + 9,
-				function ()
+				function()
 					local screen = awful.screen.focused()
 					local tag = screen.tags[i]
 					if tag then
@@ -351,7 +335,7 @@ for i = 1, 9 do
 				{description = "toggle tag #" .. i, group = "tag"}),
 		-- Move client to tag.
 		awful.key({modkey, "Shift"}, "#" .. i + 9,
-				function ()
+				function()
 					if client.focus then
 						local tag = client.focus.screen.tags[i]
 						if tag then
@@ -365,14 +349,14 @@ end
 
 -- client mouse input
 local clientbuttons = gears.table.join(
-	awful.button({}, 1, function (c)
+	awful.button({}, 1, function(c)
 		c:emit_signal("request::activate", "mouse_click", {raise = true})
 	end),
-	awful.button({modkey}, 1, function (c)
+	awful.button({modkey}, 1, function(c)
 		c:emit_signal("request::activate", "mouse_click", {raise = true})
 		awful.mouse.client.move(c)
 	end),
-	awful.button({modkey}, 3, function (c)
+	awful.button({modkey}, 3, function(c)
 		c:emit_signal("request::activate", "mouse_click", {raise = true})
 		awful.mouse.client.resize(c)
 	end)
@@ -433,7 +417,7 @@ awful.rules.rules = {
 }
 
 -- Signal function to execute when a new client appears.
-client.connect_signal("manage", function (client)
+client.connect_signal("manage", function(client)
 	if awesome.startup
 		and not client.size_hints.user_position
 		and not client.size_hints.program_position then
