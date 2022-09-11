@@ -1,0 +1,6 @@
+{
+	"Lua.workspace.checkThirdParty": false,
+	"Lua.workspace.library": [
+		"/usr/share/awesome/lib"
+	]
+}

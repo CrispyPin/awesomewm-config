@@ -8,28 +8,28 @@ local function file_exists(name)
 	if f ~= nil then
 		io.close(f)
 		return true
-	else 
+	else
 		return false
 	end
 end
 
 local INDICATOR_FILE = "/tmp/awesome_is_restarting"
 
-test = function ()
+function test()
 	local focused_client = awful.client.focus.history.get()
 	focused_client:raise()
 end
 
 
-smart_reload = function ()
+function smart_reload()
 	awful.spawn("touch " .. INDICATOR_FILE)
 	awesome.restart()
 end
 
-is_reloading = function ()
+function is_reloading()
 	return file_exists(INDICATOR_FILE)
 end
 
-finish_reload = function ()
+function finish_reload()
 	awful.spawn("rm " .. INDICATOR_FILE)
 end

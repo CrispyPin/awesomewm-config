@@ -75,7 +75,7 @@ local system_menu = {
 	}},
 }
 
-main_menu = awful.menu({items ={
+local main_menu = awful.menu({items ={
 	{"system", system_menu, beautiful.awesome_icon},
 	{"terminal", terminal},
 	{"file manager", file_manager},
@@ -83,7 +83,7 @@ main_menu = awful.menu({items ={
 	{"close menu", function() end}
 }})
 
-mylauncher = awful.widget.launcher({image = beautiful.awesome_icon, menu = main_menu})
+local launcher = awful.widget.launcher({image = beautiful.awesome_icon, menu = main_menu})
 
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
@@ -94,8 +94,17 @@ menubar.menu_gen.all_menu_dirs = {
 	--"/var/lib/flatpak/exports/share/applications",
 }
 
+local juneday = awful.widget.watch(CONFIG_DIR .. "/utils/june.sh", 600, function(widget, stdout)
+	for line in stdout:gmatch("[^\r\n]+") do
+		widget.text = " [ June " .. line .. "th ] "
+		break
+	end
+
+	widget.align = "center"
+end)
+
 -- Create a textclock widget
-mytextclock = wibox.widget.textclock()
+local textclock = wibox.widget.textclock()
 
 -- Create a wibox for each screen and add it
 -- buttons for each tag widget
@@ -177,7 +186,7 @@ awful.screen.connect_for_each_screen(function(s)
 		layout = wibox.layout.align.horizontal,
 		{-- Left widgets
 			layout = wibox.layout.fixed.horizontal,
-			mylauncher,
+			launcher,
 			s.mytaglist,
 		},
 		s.mytasklist, -- Middle widget
@@ -186,7 +195,8 @@ awful.screen.connect_for_each_screen(function(s)
 			brightness.piechart,
 			battery_widget,
 			wibox.widget.systray(),
-			mytextclock,
+			juneday,
+			textclock,
 			--s.mylayoutbox,
 		},
 	}
