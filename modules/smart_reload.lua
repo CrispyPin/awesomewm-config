@@ -20,7 +20,6 @@ function test()
 	focused_client:raise()
 end
 
-
 function smart_reload()
 	awful.spawn("touch " .. INDICATOR_FILE)
 	awesome.restart()

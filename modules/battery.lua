@@ -40,7 +40,7 @@ local battery_charging = awful.widget.watch("cat /sys/class/power_supply/AC/onli
 	end
 end)
 
-local battery_bar = awful.widget.watch("cat /sys/class/power_supply/BAT0/capacity", 30, function (widget, stdout)
+local battery_bar = awful.widget.watch("cat /sys/class/power_supply/BAT0/capacity", 30, function(widget, stdout)
 	local charge = 0
 	for line in stdout:gmatch("[^\r\n]+") do
 		charge = tonumber(line)
@@ -50,20 +50,20 @@ local battery_bar = awful.widget.watch("cat /sys/class/power_supply/BAT0/capacit
 	local red = 0
 	local green = 102
 	if charge <= 50 then
-		red = (50 - charge)*5
-		green = charge*2
+		red = (50 - charge) * 5
+		green = charge * 2
 	end
-	local color = "#" .. tohex(red) .. tohex(green) .. "00"
-	widget.color			= color
-	widget.max_value		= 100
-	widget.forced_width		= 64
-	widget.border_color		= color--"#008866"
+	local color             = "#" .. tohex(red) .. tohex(green) .. "00"
+	widget.color            = color
+	widget.max_value        = 100
+	widget.forced_width     = 64
+	widget.border_color     = color --"#008866"
 	widget.background_color = "#000000"
-	widget.border_width = 1
-	widget.shape = function(cr, width, height) gears.shape.octogon(cr, width, height, 2) end
-	widget.margins = {top=1, bottom = 1, left=5, right=5}
+	widget.border_width     = 1
+	widget.shape            = function(cr, width, height) gears.shape.octogon(cr, width, height, 2) end
+	widget.margins          = { top = 1, bottom = 1, left = 5, right = 5 }
 end,
-wibox.widget.progressbar())
+	wibox.widget.progressbar())
 
 
 battery_widget = {

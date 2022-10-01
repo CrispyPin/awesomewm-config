@@ -7,7 +7,7 @@ if is_reloading() then
 	return
 end
 
-awful.spawn(CONFIG_DIR .. "utils/xcape_conf.sh")  -- xcape config
+awful.spawn(CONFIG_DIR .. "utils/xcape_conf.sh") -- xcape config
 awful.spawn("picom -b") -- compositor
 awful.spawn("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1") -- authentication popup for obs virtual camera etc
 awful.spawn("redshift")
@@ -16,12 +16,10 @@ if not is_laptop then
 	awful.spawn("numlockx on") -- numlock
 	awful.spawn(CONFIG_DIR .. "utils/xrandr_conf.sh") -- xrandr config
 
-	awful.spawn("discord", {screen=3})
+	awful.spawn("discord", { screen = 3 })
 	awful.spawn("vscodium")
-	awful.spawn("spotify", {tag="2", screen=3, urgent=false})
+	awful.spawn("spotify", { tag = "2", screen = 3, urgent = false })
 	awful.spawn("firefox")
 
-	awful.spawn(terminal .. " -e btop", {tag="3", screen=3, urgent=false})
+	awful.spawn(terminal .. " -e btop", { tag = "3", screen = 3, urgent = false })
 end
-
-

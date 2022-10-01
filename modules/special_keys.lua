@@ -5,45 +5,64 @@ local naughty = require("naughty")
 require("modules/laptop_detector")
 
 special_keys = gears.table.join(
-	awful.key({"Ctrl"}, "Print", function ()
-		awful.util.spawn(CONFIG_DIR .. "utils/screenshot_selection.sh") end,
-	{description = "Full screenshot", group = "screenshot"}),
+	awful.key({ "Ctrl" }, "Print", function()
+		awful.util.spawn(CONFIG_DIR .. "utils/screenshot_selection.sh")
+	end,
+		{ description = "Full screenshot", group = "screenshot" }),
 
-	awful.key({ }, "Print", function ()
-		awful.util.spawn(CONFIG_DIR .. "utils/screenshot_full.sh") end,
-	{description = "Screenshot selection", group = "screenshot"}),
+	awful.key({}, "Print", function()
+		awful.util.spawn(CONFIG_DIR .. "utils/screenshot_full.sh")
+	end,
+		{ description = "Screenshot selection", group = "screenshot" }),
 
-	awful.key({"Shift"}, "Print", function ()
-		awful.util.spawn(CONFIG_DIR .. "utils/record_mp4.sh") end,
-	{description = "Screen recording", group = "screenshot"}),
+	awful.key({ "Shift" }, "Print", function()
+		awful.util.spawn(CONFIG_DIR .. "utils/record_mp4.sh")
+	end,
+		{ description = "Screen recording", group = "screenshot" }),
 
-	awful.key({modkey}, "Print", function ()
-		awful.util.spawn(CONFIG_DIR .. "utils/screenshot_active.sh") end,
-	{description = "Screenshot active", group = "screenshot"}),
+	awful.key({ modkey }, "Print", function()
+		awful.util.spawn(CONFIG_DIR .. "utils/screenshot_active.sh")
+	end,
+		{ description = "Screenshot active", group = "screenshot" }),
 
-	awful.key({modkey}, "F1", function ()
-		awful.util.spawn("/home/crispypin/dotfiles/scripts/restart_vr.sh") end,
-	{description = "Restart SteamVR", group = "launcher"})
+	awful.key({ modkey }, "F1", function()
+		awful.util.spawn("/home/crispypin/dotfiles/scripts/restart_vr.sh")
+	end,
+		{ description = "Restart SteamVR", group = "launcher" }),
 
+	-- Volume Keys
+	awful.key({}, "XF86AudioLowerVolume", function()
+		awful.util.spawn("amixer -q -D pulse sset Master 5%-", false)
+	end),
+	awful.key({}, "XF86AudioRaiseVolume", function()
+		awful.util.spawn("amixer -q -D pulse sset Master 5%+", false)
+	end),
+	awful.key({}, "XF86AudioMute", function()
+		awful.util.spawn("amixer -D pulse set Master 1+ toggle", false)
+	end),
+	-- Media Keys
+	awful.key({}, "XF86AudioPlay", function()
+		awful.util.spawn("playerctl play-pause", false)
+	end),
+	awful.key({}, "XF86AudioNext", function()
+		awful.util.spawn("playerctl next", false)
+	end),
+	awful.key({}, "XF86AudioPrev", function()
+		awful.util.spawn("playerctl previous", false)
+	end)
 )
 
 if is_laptop then
 	special_keys = gears.table.join(
 		special_keys,
-		awful.key({}, "XF86MonBrightnessUp", function ()
-			awful.spawn("/usr/bin/simple-brightness -inc 32") end,
-		{description = "Increase brightness", group = "laptop"}),
-	
-		awful.key({}, "XF86MonBrightnessDown", function ()
-			awful.spawn("/usr/bin/simple-brightness -dec 32") end,
-		{description = "Lower brightness", group = "laptop"}),
-	
-		awful.key({}, "XF86AudioRaiseVolume", function ()
-			awful.spawn("amixer sset Master 5+") end,
-		{description = "Increase volume", group = "laptop"}),
-	
-		awful.key({}, "XF86AudioLowerVolume", function ()
-			awful.spawn("amixer sset Master 5-") end,
-		{description = "Lower volume", group = "laptop"})
+		awful.key({}, "XF86MonBrightnessUp", function()
+			awful.spawn("/usr/bin/simple-brightness -inc 32")
+		end,
+			{ description = "Increase brightness", group = "laptop" }),
+
+		awful.key({}, "XF86MonBrightnessDown", function()
+			awful.spawn("/usr/bin/simple-brightness -dec 32")
+		end,
+			{ description = "Lower brightness", group = "laptop" })
 	)
 end

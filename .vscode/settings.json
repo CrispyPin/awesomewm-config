@@ -2,5 +2,8 @@
 	"Lua.workspace.checkThirdParty": false,
 	"Lua.workspace.library": [
 		"/usr/share/awesome/lib"
+	],
+	"Lua.diagnostics.disable": [
+		"lowercase-global"
 	]
 }
