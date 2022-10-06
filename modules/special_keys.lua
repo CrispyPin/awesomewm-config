@@ -30,6 +30,32 @@ special_keys = gears.table.join(
 	end,
 		{ description = "Restart SteamVR", group = "launcher" }),
 
+	-- Mouse controlwith F keys
+	awful.key({}, "XF86Tools", function()
+		awful.util.spawn("xdotool click 1")
+	end,
+		{ description = "Mouse left click", group = "mouse" }),
+	awful.key({}, "XF86Launch5", function()
+		awful.util.spawn("xdotool click 3")
+	end,
+		{ description = "Mouse right click", group = "mouse" }),
+
+	awful.key({ modkey }, "F7", function()
+		awful.util.spawn("xdotool mousemove_relative -- -15 0")
+	end,
+		{ description = "Mouse left", group = "mouse" }),
+	awful.key({ modkey }, "F9", function()
+		awful.util.spawn("xdotool mousemove_relative 15 0")
+	end,
+		{ description = "Mouse right", group = "mouse" }),
+	awful.key({ modkey }, "F3", function()
+		awful.util.spawn("xdotool mousemove_relative 0 -15")
+	end,
+		{ description = "Mouse up", group = "mouse" }),
+	awful.key({ modkey }, "F8", function()
+		awful.util.spawn("xdotool mousemove_relative 0 15")
+	end,
+		{ description = "Mouse down", group = "mouse" }),
 	-- Volume Keys
 	awful.key({}, "XF86AudioLowerVolume", function()
 		awful.util.spawn("amixer -q -D pulse sset Master 5%-", false)
