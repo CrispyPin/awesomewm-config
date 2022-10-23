@@ -408,9 +408,6 @@ awful.rules.rules = {
 	{ rule_any = { name = { "Launching steam" }
 	}, properties = { focus = false, raise = false }
 	},
-	{ rule_any = { name = { "ChilloutVR" }
-	}, properties = { minimized = true, focus = false, raise = false }
-	},
 	{ rule = {
 		class = "/home/crispypin/bin/ovr-utils/ovr-utils.x86_64",
 	},

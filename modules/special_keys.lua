@@ -30,56 +30,6 @@ special_keys = gears.table.join(
 	end,
 		{ description = "Restart SteamVR", group = "launcher" }),
 
-	-- mouse clicking with F13+ keys
-	awful.key({}, "XF86Tools", function()
-		awful.util.spawn("xdotool click 1")
-	end,
-		{ description = "Mouse left click", group = "mouse" }),
-	awful.key({}, "XF86Launch5", function()
-		awful.util.spawn("xdotool click 3")
-	end,
-		{ description = "Mouse right click", group = "mouse" }),
-	awful.key({}, "XF86Launch6", function()
-		awful.util.spawn("xdotool click 2")
-	end,
-		{ description = "Mouse middle click", group = "mouse" }),
-
-	-- mouse movement
-	awful.key({ modkey }, "F7", function()
-		awful.util.spawn("xdotool mousemove_relative -- -15 0")
-	end,
-		{ description = "Mouse left", group = "mouse" }),
-	awful.key({ modkey }, "F9", function()
-		awful.util.spawn("xdotool mousemove_relative 15 0")
-	end,
-		{ description = "Mouse right", group = "mouse" }),
-	awful.key({ modkey }, "F3", function()
-		awful.util.spawn("xdotool mousemove_relative 0 -15")
-	end,
-		{ description = "Mouse up", group = "mouse" }),
-	awful.key({ modkey }, "F8", function()
-		awful.util.spawn("xdotool mousemove_relative 0 15")
-	end,
-		{ description = "Mouse down", group = "mouse" }),
-
-	-- faster mouse movement
-	awful.key({ modkey, "Control" }, "F7", function()
-		awful.util.spawn("xdotool mousemove_relative -- -200 0")
-	end,
-		{ description = "Mouse left fast", group = "mouse" }),
-	awful.key({ modkey, "Control" }, "F9", function()
-		awful.util.spawn("xdotool mousemove_relative 200 0")
-	end,
-		{ description = "Mouse right fast", group = "mouse" }),
-	awful.key({ modkey, "Control" }, "F3", function()
-		awful.util.spawn("xdotool mousemove_relative 0 -200")
-	end,
-		{ description = "Mouse up fast", group = "mouse" }),
-	awful.key({ modkey, "Control" }, "F8", function()
-		awful.util.spawn("xdotool mousemove_relative 0 200")
-	end,
-		{ description = "Mouse down fast", group = "mouse" }),
-
 	-- Volume Keys
 	awful.key({}, "XF86AudioLowerVolume", function()
 		awful.util.spawn("amixer -q -D pulse sset Master 5%-", false)

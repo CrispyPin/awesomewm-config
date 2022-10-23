@@ -11,6 +11,7 @@ awful.spawn(CONFIG_DIR .. "utils/xcape_conf.sh") -- xcape config
 awful.spawn("picom -b") -- compositor
 awful.spawn("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1") -- authentication popup for obs virtual camera etc
 awful.spawn("redshift")
+awful.spawn("sxhkd")
 
 if not is_laptop then
 	awful.spawn("numlockx on") -- numlock
