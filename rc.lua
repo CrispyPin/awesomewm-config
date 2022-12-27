@@ -66,6 +66,10 @@ awful.menu.menu_keys = {
 -- Menu
 -- Create a launcher widget and a main menu
 local system_menu = {
+	{ "keyboard layout", {
+		{ "SE", function() awful.spawn("setxkbmap -layout se") end },
+		{ "US", function() awful.spawn("setxkbmap -layout us") end },
+	} },
 	{ "hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end },
 	{ "reload", smart_reload },
 	{ "log out", function() awesome.quit() end },
