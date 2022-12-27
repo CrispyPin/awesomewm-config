@@ -30,16 +30,12 @@ special_keys = gears.table.join(
 	end,
 		{ description = "Restart SteamVR", group = "launcher" }),
 
-	-- Volume Keys
-	awful.key({}, "XF86AudioLowerVolume", function()
-		awful.util.spawn("amixer -q -D pulse sset Master 5%-", false)
-	end),
-	awful.key({}, "XF86AudioRaiseVolume", function()
-		awful.util.spawn("amixer -q -D pulse sset Master 5%+", false)
-	end),
-	awful.key({}, "XF86AudioMute", function()
-		awful.util.spawn("amixer -D pulse set Master 1+ toggle", false)
-	end),
+	awful.key({ modkey }, "r", function()
+		awful.util.spawn("rofi -show")
+	end,
+		{ description = "Rofi", group = "launcher" }),
+
+
 	-- Media Keys
 	awful.key({}, "XF86AudioPlay", function()
 		awful.util.spawn("playerctl play-pause", false)
