@@ -10,6 +10,11 @@ special_keys = gears.table.join(
 	end,
 		{ description = "Full screenshot", group = "screenshot" }),
 
+	awful.key({ modkey, "Shift" }, "s", function()
+		awful.util.spawn(CONFIG_DIR .. "utils/screenshot_selection.sh")
+	end,
+		{ description = "Full screenshot", group = "screenshot" }),
+
 	awful.key({}, "Print", function()
 		awful.util.spawn(CONFIG_DIR .. "utils/screenshot_full.sh")
 	end,
