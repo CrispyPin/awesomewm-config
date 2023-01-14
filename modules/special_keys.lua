@@ -8,32 +8,28 @@ special_keys = gears.table.join(
 	awful.key({ "Ctrl" }, "Print", function()
 		awful.util.spawn(CONFIG_DIR .. "utils/screenshot_selection.sh")
 	end,
-		{ description = "Full screenshot", group = "screenshot" }),
+		{ description = "screenshot selection", group = "screenshot" }),
 
 	awful.key({ modkey, "Shift" }, "s", function()
 		awful.util.spawn(CONFIG_DIR .. "utils/screenshot_selection.sh")
 	end,
-		{ description = "Full screenshot", group = "screenshot" }),
+		{ description = "screenshot selection", group = "screenshot" }),
 
 	awful.key({}, "Print", function()
 		awful.util.spawn(CONFIG_DIR .. "utils/screenshot_full.sh")
 	end,
-		{ description = "Screenshot selection", group = "screenshot" }),
+		{ description = "full screenshot", group = "screenshot" }),
 
 	awful.key({ "Shift" }, "Print", function()
 		awful.util.spawn(CONFIG_DIR .. "utils/record_mp4.sh")
 	end,
-		{ description = "Screen recording", group = "screenshot" }),
+		{ description = "record selection", group = "screenshot" }),
 
 	awful.key({ modkey }, "Print", function()
 		awful.util.spawn(CONFIG_DIR .. "utils/screenshot_active.sh")
 	end,
-		{ description = "Screenshot active", group = "screenshot" }),
+		{ description = "screenshot active window", group = "screenshot" }),
 
-	awful.key({ modkey }, "F1", function()
-		awful.util.spawn("/home/crispypin/dotfiles/scripts/restart_vr.sh")
-	end,
-		{ description = "Restart SteamVR", group = "launcher" }),
 
 	awful.key({ modkey }, "r", function()
 		awful.util.spawn("rofi -show")
